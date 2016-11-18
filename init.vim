@@ -80,7 +80,7 @@ call dein#add('neomake/neomake')
 call dein#add('ramitos/jsctags')
 " }}}
 " Devicons {{{
-call dein#add('ryanoasis/vim-webdevicons')
+call dein#add('ryanoasis/vim-devicons')
 " }}}
 " Auto Install Plugins {{{
 if dein#check_install()
