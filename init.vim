@@ -167,6 +167,36 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
       \: "\<TAB>"
 " }}}
 " Unite Setup: {{{
+" Unite Setup: {{{
+let g:unite_data_directory='~/.nvim/.cache/unite'
+let g:unite_source_history_yank_enable=1
+let g:unite_force_overwrite_statusline = 0
+let g:unite_prompt='> '
+" }}}
+" Denite Setup: {{{
+call denite#custom#source(
+      \ 'file_rec', 'vars', {
+      \   'command': [
+      \     'ag', '--follow', '--nogroup', '--hidden', '-g', '', '--ignore', '.git', '--ignore', '*.png', '--ignore', 'lib'
+      \   ] })
+call denite#custom#var('grep', 'command', ['ag'])
+call denite#custom#var('grep', 'default_opts',
+      \ ['--nocolor', '--nogroup', '--column'])
+nnoremap <silent> <c-p> :Denite file_rec<CR>
+nnoremap <silent> <leader>h :Unite -auto-resize -start-insert -direction=botright help<CR>
+let g:lmap.h = { 'name': 'Unite help' }
+nnoremap <silent> <leader>c :Denite colorscheme<CR>
+let g:lmap.c = { 'name' : 'Denite Color' }
+nnoremap <silent> <leader>u :call dein#update()<CR>
+let g:lmap.u = { 'name' : 'Dein Update' }
+nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
+let g:lmap.o = { 'name' : 'Unite Outline' }
+" Custom mappings for the unite buffer
+autocmd! BufWinEnter unite call s:unite_settings()
+
+call denite#custom#map('_', "\<C-j>", 'move_to_next_line')
+call denite#custom#map('_', "\<C-k>", 'move_to_prev_line')
+" }}}
 " Git from unite: {{{
 let s:menus = {}
 let s:menus.git = {
@@ -203,36 +233,6 @@ let s:menus.git.command_candidates = [
       \]
 call denite#custom#var('menu', 'menus', s:menus)
 nnoremap <silent> <Leader>g :Denite menu:git <CR>
-" }}}
-" Unite Setup: {{{
-let g:unite_data_directory='~/.nvim/.cache/unite'
-let g:unite_source_history_yank_enable=1
-let g:unite_force_overwrite_statusline = 0
-let g:unite_prompt='> '
-" }}}
-" Denite Setup: {{{
-call denite#custom#source(
-      \ 'file_rec', 'vars', {
-      \   'command': [
-      \     'ag', '--follow', '--nogroup', '--hidden', '-g', '', '--ignore', '.git', '--ignore', '*.png', '--ignore', 'lib'
-      \   ] })
-call denite#custom#var('grep', 'command', ['ag'])
-call denite#custom#var('grep', 'default_opts',
-      \ ['--nocolor', '--nogroup', '--column'])
-nnoremap <silent> <c-p> :Denite file_rec<CR>
-nnoremap <silent> <leader>h :Unite -auto-resize -start-insert -direction=botright help<CR>
-let g:lmap.h = { 'name': 'Unite help' }
-nnoremap <silent> <leader>c :Denite colorscheme<CR>
-let g:lmap.c = { 'name' : 'Denite Color' }
-nnoremap <silent> <leader>u :call dein#update()<CR>
-let g:lmap.u = { 'name' : 'Dein Update' }
-nnoremap <silent> <leader>o :Unite -winwidth=45 -vertical -direction=botright outline<CR>
-let g:lmap.o = { 'name' : 'Unite Outline' }
-" Custom mappings for the unite buffer
-autocmd! BufWinEnter unite call s:unite_settings()
-
-call denite#custom#map('_', "\<C-j>", 'move_to_next_line')
-call denite#custom#map('_', "\<C-k>", 'move_to_prev_line')
 " }}}
 " }}}
 " Workman Key Mappings Setup: {{{
