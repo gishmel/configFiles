@@ -309,6 +309,9 @@ endif
 " \ }
 
 " }}}
+" Vimagit Setup: {{{
+autocmd User VimagitEnterCommit startinsert
+" }}}
 " NERDTree ------------------------------------------------------------------{{{
 
 let NERDTreeMapJumpFirstChild = ''
