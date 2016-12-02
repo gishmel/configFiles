@@ -367,29 +367,6 @@ tmap <C-y> <C-\><C-n>:TmuxNavigateLeft<CR>
 tmap <C-i> <C-\><C-n>:TmuxNavigatePrevious<cr>
 "}}}
 " Fold, gets it's own section  {{{
-
-function! MyFoldText() " {{{
-  let line = getline(v:foldstart)
-
-  let nucolwidth = &fdc + &number * &numberwidth
-  let windowwidth = winwidth(0) - nucolwidth - 3
-  let foldedlinecount = v:foldend - v:foldstart
-
-  " expand tabs into spaces
-  let onetab = strpart('          ', 0, &tabstop)
-  let line = substitute(line, '\t', onetab, 'g')
-
-  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-  return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction " }}}
-
-set foldtext=MyFoldText()
-
-autocmd InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-autocmd InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
-
-autocmd FileType vim setlocal fdc=1
 set foldlevel=99
 " Space to toggle folds.
 nnoremap <Space> za
