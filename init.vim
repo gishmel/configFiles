@@ -297,17 +297,7 @@ if has('nvim')
 endif
 " }}}
 " Tagbar Setup: {{{
-" Need a special version of ctags and don't feel like dealing with that
-" crap for CSS when I mostly use SCSS anyways
-" let g:tagbar_type_css = {
-" \ 'ctagstype' : 'Css',
-" \ 'kinds'     : [
-"   \ 'c:classes',
-"   \ 's:selectors',
-"   \ 'i:identities'
-" \ ]
-" \ }
-
+nmap <F8> :TagbarToggle<CR>
 " }}}
 " Vimagit Setup: {{{
 autocmd User VimagitEnterCommit startinsert
