@@ -41,9 +41,14 @@ call dein#add('tpope/vim-abolish')
 call dein#add('othree/yajs.vim', {'on_ft': 'javascript'})
 call dein#add('othree/es.next.syntax.vim', {'on_ft': 'javascript'})
 call dein#add('othree/jsdoc-syntax.vim', {'on_ft':['javascript', 'typescript']})
+call dein#add('othree/html5-syntax.vim', {'on_ft': 'html'})
+call dein#add('othree/html5.vim', {'on_ft': 'html'})
 call dein#add('heavenshell/vim-jsdoc', {'on_ft':['javascript', 'typescript']})
 call dein#add('moll/vim-node', {'on_ft':['javascript', 'typescript']})
 call dein#add('elzr/vim-json', {'on_ft': 'json'})
+call dein#add('pangloss/vim-javascript', {'on_ft': 'javascript'})
+
+call dein#add('gregsexton/matchtag', {'on_ft': 'html'})
 
 call dein#add('hail2u/vim-css3-syntax', {'on_ft':['css','scss']})
 call dein#add('ap/vim-css-color', {'on_ft': ['css', 'scss', 'yaml']})
@@ -75,6 +80,8 @@ call dein#add('ervandew/supertab')
 call dein#add('townk/vim-autoclose')
 " }}}
 " Tags, Linting, Building {{{
+call dein#add('xolox/vim-easytags')
+call dein#add('xolox/vim-misc')
 call dein#add('majutsushi/tagbar')
 call dein#add('neomake/neomake')
 call dein#add('ramitos/jsctags')
@@ -296,8 +303,11 @@ if has('nvim')
   autocmd! BufWritePost *.js Neomake
 endif
 " }}}
-" Tagbar Setup: {{{
+" Tags Setup: {{{
 nmap <F8> :TagbarToggle<CR>
+let g:easytags_async = 1
+nnoremap <Leader>tj <C-]>
+nnoremap <Leader>tb <C-t>
 " }}}
 " Vimagit Setup: {{{
 autocmd User VimagitEnterCommit startinsert
