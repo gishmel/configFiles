@@ -43,6 +43,7 @@ call dein#add('othree/es.next.syntax.vim', {'on_ft': 'javascript'})
 call dein#add('othree/jsdoc-syntax.vim', {'on_ft':['javascript', 'typescript']})
 call dein#add('othree/html5-syntax.vim', {'on_ft': 'html'})
 call dein#add('othree/html5.vim', {'on_ft': 'html'})
+call dein#add('othree/jspc.vim', {'on_ft': 'javascript'})
 call dein#add('heavenshell/vim-jsdoc', {'on_ft':['javascript', 'typescript']})
 call dein#add('moll/vim-node', {'on_ft':['javascript', 'typescript']})
 call dein#add('elzr/vim-json', {'on_ft': 'json'})
@@ -75,7 +76,7 @@ call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
 call dein#add('mhartington/vim-devicons')
 call dein#add('hecal3/vim-leader-guide')
 call dein#add('ternjs/tern_for_vim', {'build': 'npm install'})
-call dein#add('carlitux/deoplete-ternjs')
+call dein#add('carlitux/deoplete-ternjs', {'build': 'npm install -g tern'})
 call dein#add('ervandew/supertab')
 call dein#add('townk/vim-autoclose')
 " }}}
@@ -135,27 +136,42 @@ nnoremap ; :
 " Deoplete Setup: {{{
 set runtimepath+=~/.config/nvim/repos/github.com/Shougo/deoplete.nvim/
 let g:deoplete#enable_at_startup = 1
-call deoplete#custom#set('npm', 'debug_enabled', 1)
-call deoplete#custom#set('htmlTag', 'debug_enabled', 1)
-let g:vim_json_syntax_conceal = 0
-set splitbelow
-set completeopt+=noselect
-call deoplete#custom#set('buffer', 'mark', 'buffer')
-call deoplete#custom#set('ternjs', 'mark', 'tern')
-call deoplete#custom#set('omni', 'mark', 'omni')
-call deoplete#custom#set('file', 'mark', 'file')
-let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.html = ''
-function! Preview_func()
-  if &pvw
-    setlocal nonumber norelativenumber
-  endif
-endfunction
-
-autocmd WinEnter * call Preview_func()
-" Use tern_for_vim
+set completeopt=longest,menuone,preview
+let g:deoplete#sources = {}
+let g:deoplete#sources['javascript'] = ['file', 'ultisnips', 'ternjs']
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = [
+      \ 'tern#Complete',
+      \ 'jspc#omni'
+      \]
+" let g:deoplete#disable_auto_complete = 1
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" omnifuncs {{{
+  augroup omnifuncs
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  augroup end
+" }}}
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" }}}
+" Use tern_for_vim {{{
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
+autocmd FileType javascript setlocal omnifunc=tern#Complete
+
+noremap <Leader>tD :TernDoc<CR> " Find the documentation of the thing under the cursor
+noremap <Leader>tb :TernDocBrowse<CR> " Browse the documentation
+noremap <Leader>tt :TernType<CR> " Find the type of the thing under the cursor
+noremap <Leader>td :TernDef<CR> " Jump to the definition of the thing under the cursor
+noremap <Leader>tpd :TernDefPreview<CR> " Bring up a small split with the definition
+noremap <Leader>ttd :TernDefTab<CR> " Bring up a tab with the definition
+noremap <Leader>tr :TernRefs<CR> " Show all references to the thing under the cursor
+noremap <Leader>tR :TernRename<CR> " Rename the variable under the cursor
+
+" tern
+autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+
 " }}}
 " Neosnippet Setup: {{{
 let g:neosnippet#snippets_directory='~/.config/nvim/repos/github.com/Shougo/neosnippet-snippets/neosnippets'
@@ -311,6 +327,7 @@ nnoremap <Leader>tb <C-t>
 " }}}
 " Vimagit Setup: {{{
 autocmd User VimagitEnterCommit startinsert
+noremap <Leader>m :Magit<CR>
 " }}}
 " NERDTree ------------------------------------------------------------------{{{
 
@@ -392,7 +409,6 @@ autocmd FileType css,scss,json setlocal foldmethod=syntax
 
 autocmd FileType coffee setl foldmethod=indent
 autocmd FileType html setl foldmethod=expr
-autocmd FileType html setl foldexpr=HTMLFolds()
 
 autocmd FileType javascript,typescript,json setl foldmethod=syntax
 " autocmd FileType javascript,typescript,json setlocal foldmethod=marker
