@@ -134,6 +134,29 @@ let g:lmap.f = { 'name' : 'Format file' }
 nnoremap ; :
 
 " }}}
+" Code formatting -----------------------------------------------------------{{{
+
+" ,f to format code, requires formatters: read the docs
+"
+  noremap <silent> <leader>f :Neoformat<CR>
+  let g:standard_prettier_settings = {
+              \ 'exe': 'prettier',
+              \ 'args': ['--stdin', '--stdin-filepath', '%:p', '--single-quote'],
+              \ 'stdin': 1,
+              \ }
+  let g:neoformat_vue_prettier = {
+              \ 'exe': 'vue-formatter',
+              \ 'stdin': 1,
+        \}
+              " \ 'args': ['--stdin', '--stdin-filepath', '%:p', '--single-quote'],
+    let g:neoformat_zsh_shfmt = {
+              \ 'exe': 'shfmt',
+              \ 'args': ['-i ' . shiftwidth()],
+              \ 'stdin': 1,
+              \ }
+  let g:neoformat_enabled_zsh = ['shfmt']
+
+" }}}
 " Use tern_for_vim {{{
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
@@ -303,7 +326,6 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
 " autocmd FileType javascript,typescript,json setlocal foldmethod=marker
 " autocmd FileType javascript,typescript,json setlocal foldmarker={,}
 " }}}
-
 " Deoplete ------------------------------------------------------------------{{{
 
   " enable deoplete
@@ -356,7 +378,6 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
   " call deoplete#enable_logging('WARN', 'deoplete.log')
   " call deoplete#custom#source('typescript', 'is_debug_enabled', 1)
 "}}}
-
 " Denite --------------------------------------------------------------------{{{
 
   let s:menus = {}
@@ -403,7 +424,7 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
 
 
 
-  nnoremap <silent> <c-p>      :Denite file/rec<CR>
+  nnoremap <silent> <leader>p      :Denite file/rec<CR>
   nnoremap <silent> <leader>h  :Denite help<CR>
   nnoremap <silent> <leader>v  :Denite vison<CR>
   nnoremap <silent> <leader>c  :Denite colorscheme<CR>
@@ -450,7 +471,6 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
     \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
   call denite#custom#var('menu', 'menus', s:menus)
 "}}}
-
 " Linting -------------------------------------------------------------------{{{
 
   call neomake#configure#automake({
@@ -487,7 +507,6 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
   \}
   let g:ale_fix_on_save = 1
 "}}}
-
 " Javascript ----------------------------------------------------------------{{{
   " set nobinary
   " let $NVIM_NODE_LOG_FILE='nvim-node.log'
@@ -591,7 +610,6 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
 
 
 " }}}
-
 " Snipppets -----------------------------------------------------------------{{{
 
 " Enable snipMate compatibility feature.
@@ -613,30 +631,6 @@ autocmd FileType javascript,typescript,json setl foldmethod=syntax
 "   \: "\<TAB>"
 
 "}}}
-
-" Code formatting -----------------------------------------------------------{{{
-
-" ,f to format code, requires formatters: read the docs
-"
-  noremap <silent> <leader>f :Neoformat<CR>
-  let g:standard_prettier_settings = {
-              \ 'exe': 'prettier',
-              \ 'args': ['--stdin', '--stdin-filepath', '%:p', '--single-quote'],
-              \ 'stdin': 1,
-              \ }
-  let g:neoformat_vue_prettier = {
-              \ 'exe': 'vue-formatter',
-              \ 'stdin': 1,
-        \}
-              " \ 'args': ['--stdin', '--stdin-filepath', '%:p', '--single-quote'],
-    let g:neoformat_zsh_shfmt = {
-              \ 'exe': 'shfmt',
-              \ 'args': ['-i ' . shiftwidth()],
-              \ 'stdin': 1,
-              \ }
-  let g:neoformat_enabled_zsh = ['shfmt']
-
-" }}}
 
 
 
